@@ -1,0 +1,208 @@
+"""Digital career catalogue used by the recommendation engine.
+
+Each career lists the skills and interests that signal a fit, what it needs
+(device, connectivity, minimum education), a phased learning roadmap, portfolio
+projects, and beginner-level places to find work. Resources named here are
+real, free or low-cost starting points (e.g. DigiSkills.pk is Pakistan's
+government-run free online training programme).
+"""
+
+EDU_LEVELS = ["middle", "matric", "intermediate", "bachelors", "masters"]
+
+CAREERS = [
+    {
+        "id": "graphic-design", "title": "Graphic & Brand Designer", "family": "Create",
+        "pitch": "Logos, social posts, posters and brand kits for small businesses.",
+        "skills": ["drawing", "canva", "photography", "creativity", "english"],
+        "interests": ["art", "design", "fashion", "social-media", "business"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "medium",
+        "starting_rate_usd": "5-15 per design",
+        "roadmap": [
+            ("Foundations", 4, "Colour, type and layout basics; DigiSkills Graphic Design course; daily Canva practice."),
+            ("Tools", 4, "Learn Figma or Photopea (free, browser-based) for vector and photo work."),
+            ("Brand thinking", 3, "Study how logos, palettes and type form one identity."),
+            ("Client practice", 3, "Redesign three real local businesses' posts with their permission."),
+        ],
+        "projects": ["Brand kit for a local bakery or tailor", "10-post Instagram set for a school event", "Bilingual (Urdu/English) event poster series"],
+        "opportunities": ["Fiverr - logo & social-post gigs", "Local shops needing Eid / sale posters", "Behance portfolio for agency outreach"],
+    },
+    {
+        "id": "content-writing", "title": "Content Writer (English / Urdu)", "family": "Communicate",
+        "pitch": "Blogs, product descriptions and website copy for clients anywhere.",
+        "skills": ["english", "urdu", "writing", "research", "typing"],
+        "interests": ["reading", "writing", "education", "health", "travel"],
+        "min_edu": "intermediate", "phone_ok": True, "bandwidth": "low",
+        "starting_rate_usd": "5-20 per article",
+        "roadmap": [
+            ("Writing craft", 4, "Daily 300-word practice; grammar with free tools; DigiSkills Creative Writing."),
+            ("SEO basics", 3, "Keywords, headings and search intent; write for readers first."),
+            ("Niche", 3, "Pick 1-2 niches (health, education, travel) and read the best sites in them."),
+            ("Pitching", 2, "Write proposals that open with the client's problem, not your bio."),
+        ],
+        "projects": ["Three 800-word blog posts in your niche", "Urdu + English product descriptions for 10 items", "A personal portfolio page on Medium or Google Sites"],
+        "opportunities": ["Upwork - entry-level writing jobs", "Pakistani e-commerce stores needing Urdu copy", "NGO newsletters and reports"],
+    },
+    {
+        "id": "translation", "title": "Translator & Localiser", "family": "Communicate",
+        "pitch": "Turn your languages - Balochi, Brahui, Pashto, Urdu, English - into income.",
+        "skills": ["balochi", "brahui", "pashto", "urdu", "english", "writing"],
+        "interests": ["languages", "culture", "health", "education", "reading"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "low",
+        "starting_rate_usd": "0.02-0.05 per word",
+        "roadmap": [
+            ("Language audit", 2, "Test your written level in each language; build glossaries."),
+            ("Translation craft", 4, "Meaning over words; practise on public-health and education leaflets."),
+            ("Tools", 3, "Free CAT tools (e.g. Smartcat), consistent terminology, proofreading."),
+            ("Specialise", 3, "Health, humanitarian or subtitles - pick one and build samples."),
+        ],
+        "projects": ["Translate a public-health leaflet into two regional languages", "Subtitle a 5-minute educational video", "A trilingual glossary of 200 everyday terms"],
+        "opportunities": ["NGO and humanitarian translation rosters", "Subtitling for regional media", "ProZ.com directory profile"],
+    },
+    {
+        "id": "virtual-assistance", "title": "Virtual Assistant", "family": "Organise",
+        "pitch": "Inbox, calendar, research and admin support for busy founders.",
+        "skills": ["english", "typing", "organisation", "excel", "communication"],
+        "interests": ["business", "organising", "helping-people", "technology"],
+        "min_edu": "intermediate", "phone_ok": False, "bandwidth": "medium",
+        "starting_rate_usd": "3-6 per hour",
+        "roadmap": [
+            ("Office tools", 3, "Google Workspace: Docs, Sheets, Calendar, Gmail filters."),
+            ("Communication", 3, "Professional email writing; clear status updates."),
+            ("Systems", 3, "Task boards (Trello / Notion), templates, SOPs."),
+            ("Client fit", 2, "Choose a niche (real estate, coaches, e-commerce)."),
+        ],
+        "projects": ["A sample SOP for onboarding a new client", "Research brief comparing 5 suppliers", "Organised mock inbox + calendar walkthrough video"],
+        "opportunities": ["Upwork - admin support", "OnlineJobs-style VA boards", "Overseas Pakistani small-business owners"],
+    },
+    {
+        "id": "social-media", "title": "Social Media Manager", "family": "Communicate",
+        "pitch": "Plan, create and grow social accounts for local and global brands.",
+        "skills": ["canva", "writing", "photography", "social-media", "communication"],
+        "interests": ["social-media", "fashion", "business", "food", "marketing"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "medium",
+        "starting_rate_usd": "50-150 per month per account",
+        "roadmap": [
+            ("Platforms", 3, "How Instagram, Facebook and TikTok algorithms reward content."),
+            ("Content", 4, "Content calendars, captions, reels shot on a phone."),
+            ("Analytics", 3, "Read insights; report what worked and why."),
+            ("Ads basics", 3, "Meta ads fundamentals with tiny test budgets."),
+        ],
+        "projects": ["30-day content calendar for a local brand", "Grow a practice page and report the numbers", "Before/after audit of a business account"],
+        "opportunities": ["Local shops, salons and restaurants", "Fiverr - social media management", "Agency junior roles (remote)"],
+    },
+    {
+        "id": "web-development", "title": "Web Developer", "family": "Build",
+        "pitch": "Websites and online stores - from simple pages to full apps.",
+        "skills": ["coding", "html", "maths", "problem-solving", "english"],
+        "interests": ["technology", "building", "design", "business"],
+        "min_edu": "intermediate", "phone_ok": False, "bandwidth": "high",
+        "starting_rate_usd": "50-300 per site",
+        "roadmap": [
+            ("HTML & CSS", 5, "freeCodeCamp Responsive Web Design; build 5 static pages."),
+            ("JavaScript", 6, "Logic, DOM, fetch; small interactive projects."),
+            ("Real tools", 4, "Git/GitHub, deployment, WordPress or Shopify basics."),
+            ("Client work", 4, "One real site for a local business, live on the internet."),
+        ],
+        "projects": ["Live website for a local business", "Personal portfolio deployed on GitHub Pages / Vercel", "Small e-commerce demo store"],
+        "opportunities": ["Upwork / Fiverr - small website fixes", "Local schools and clinics without websites", "Open-source first issues on GitHub"],
+    },
+    {
+        "id": "data-annotation", "title": "AI Data Annotator", "family": "Organise",
+        "pitch": "Label images, text and audio that train AI systems.",
+        "skills": ["attention-to-detail", "english", "typing", "urdu"],
+        "interests": ["technology", "ai", "organising", "languages"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "medium",
+        "starting_rate_usd": "2-5 per hour",
+        "roadmap": [
+            ("AI basics", 2, "What training data is and why quality matters."),
+            ("Annotation tools", 3, "Bounding boxes, text classification, transcription practice."),
+            ("Quality habits", 2, "Guidelines, consistency checks, speed with accuracy."),
+            ("Language edge", 2, "Regional-language data tasks are scarce - and valuable."),
+        ],
+        "projects": ["Annotate a 200-image practice dataset", "Transcribe & label 30 minutes of regional-language audio", "Write a clear annotation guideline for a small task"],
+        "opportunities": ["Data-labelling platforms' entry tasks", "Regional-language speech data projects", "University research assistant tasks"],
+    },
+    {
+        "id": "data-analysis", "title": "Data Analyst", "family": "Build",
+        "pitch": "Turn spreadsheets into decisions for businesses and NGOs.",
+        "skills": ["excel", "maths", "problem-solving", "research", "english"],
+        "interests": ["technology", "business", "organising", "ai", "education"],
+        "min_edu": "intermediate", "phone_ok": False, "bandwidth": "medium",
+        "starting_rate_usd": "8-20 per hour",
+        "roadmap": [
+            ("Spreadsheets", 4, "Formulas, pivots, cleaning messy data in Google Sheets."),
+            ("Visualisation", 3, "Charts that answer one question each; Looker Studio."),
+            ("SQL", 5, "Free SQL courses; query real public datasets."),
+            ("Story", 3, "Present findings in a one-page brief."),
+        ],
+        "projects": ["Clean and analyse a public education dataset", "Sales dashboard for a local shop", "One-page insight brief with 3 charts"],
+        "opportunities": ["Upwork - data entry to analysis", "NGO monitoring & evaluation support", "Small businesses' sales reporting"],
+    },
+    {
+        "id": "online-tutoring", "title": "Online Tutor", "family": "Teach",
+        "pitch": "Teach maths, English, science or Quran to students worldwide.",
+        "skills": ["maths", "english", "communication", "urdu", "teaching"],
+        "interests": ["education", "helping-people", "reading", "languages"],
+        "min_edu": "intermediate", "phone_ok": True, "bandwidth": "medium",
+        "starting_rate_usd": "3-10 per hour",
+        "roadmap": [
+            ("Subject audit", 2, "Pick 1-2 subjects and grade levels you can teach confidently."),
+            ("Online teaching", 3, "Lesson structure, Google Meet, digital whiteboards."),
+            ("Materials", 3, "Worksheets and short explainer videos."),
+            ("Reputation", 3, "Demo lessons, parent reviews, consistent schedule."),
+        ],
+        "projects": ["Three recorded 10-minute demo lessons", "A worksheet pack for one grade", "Student progress tracker template"],
+        "opportunities": ["Tutoring marketplaces", "Overseas Pakistani families", "Local students needing exam prep"],
+    },
+    {
+        "id": "video-editing", "title": "Video Editor", "family": "Create",
+        "pitch": "Edit reels, YouTube videos and short ads.",
+        "skills": ["video", "creativity", "photography", "social-media"],
+        "interests": ["film", "social-media", "art", "travel", "marketing"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "high",
+        "starting_rate_usd": "5-25 per short video",
+        "roadmap": [
+            ("Editing basics", 3, "Cuts, pacing, captions with CapCut on phone."),
+            ("Storytelling", 3, "Hooks in the first 3 seconds; structure for short-form."),
+            ("Desktop tools", 4, "DaVinci Resolve (free) for longer edits."),
+            ("Niche", 2, "Pick a niche: education, food, travel, products."),
+        ],
+        "projects": ["Three 30-second reels for a local business", "A 3-minute documentary about your district", "Before/after edit showcase"],
+        "opportunities": ["YouTubers needing shorts editors", "Fiverr - reel editing", "Local event highlight videos"],
+    },
+    {
+        "id": "ui-ux-design", "title": "UI / UX Designer", "family": "Create",
+        "pitch": "Design apps and websites people find easy to use.",
+        "skills": ["drawing", "creativity", "problem-solving", "english", "canva"],
+        "interests": ["design", "technology", "art", "helping-people"],
+        "min_edu": "intermediate", "phone_ok": False, "bandwidth": "high",
+        "starting_rate_usd": "10-25 per hour",
+        "roadmap": [
+            ("Design basics", 3, "Layout, hierarchy, accessibility."),
+            ("Figma", 4, "Components, auto-layout, prototypes."),
+            ("Research", 3, "Interview 5 users; find their real problems."),
+            ("Case studies", 4, "Write up 2 projects from problem to solution."),
+        ],
+        "projects": ["Redesign a government or school form for mobile", "App concept that solves a local problem", "Two full case studies"],
+        "opportunities": ["Upwork - small UI tasks", "Startups needing landing pages", "Design challenges & communities"],
+    },
+    {
+        "id": "ecommerce", "title": "E-commerce Store Manager", "family": "Organise",
+        "pitch": "Run online stores - listings, orders and customers - for local crafts and brands.",
+        "skills": ["photography", "writing", "organisation", "social-media", "excel"],
+        "interests": ["business", "fashion", "crafts", "marketing", "food"],
+        "min_edu": "matric", "phone_ok": True, "bandwidth": "medium",
+        "starting_rate_usd": "Commission or 40-120 per month",
+        "roadmap": [
+            ("Marketplaces", 3, "How Daraz, Shopify and Instagram shops work."),
+            ("Listings", 3, "Product photos on a phone, titles, descriptions, pricing."),
+            ("Operations", 3, "Orders, delivery partners, customer messages."),
+            ("Growth", 3, "Reviews, promotions and repeat customers."),
+        ],
+        "projects": ["Online store for Balochi embroidery from local artisans", "20 optimised product listings", "Simple order & stock tracker"],
+        "opportunities": ["Local artisans and embroidery collectives", "Daraz sellers needing listing help", "Small brands' store assistants"],
+    },
+]
+
+SKILL_OPTIONS = sorted({s for c in CAREERS for s in c["skills"]})
+INTEREST_OPTIONS = sorted({i for c in CAREERS for i in c["interests"]})
