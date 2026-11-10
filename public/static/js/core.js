@@ -80,7 +80,7 @@ window.BB = (function () {
       const S = stats.offsetTop - 24;            // keep the drawing above the stats row
       svg.attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid slice");
       const wide = W > 760;
-      const box = wide ? [[W * .5, 96], [W * .86, S - 20]] : [[W * .1, 100], [W * .9, H * .5]];
+      const box = wide ? [[W * .6, 150], [W * .8, S - 70]] : [[W * .1, 100], [W * .9, H * .5]];
       const proj = d3.geoMercator().fitExtent(box, g);
       const path = d3.geoPath(proj);
       const defs = svg.append("defs");
@@ -89,18 +89,35 @@ window.BB = (function () {
       grad.append("stop").attr("offset", 1).attr("stop-color", "#8B5CF6");
       svg.append("g").selectAll("path").data(g.features).join("path").attr("class", "dist").attr("d", path);
       const pts = g.features.map(f => proj([f.properties.cx, f.properties.cy]));
-      // the world beyond: destinations at the edge of the frame
-      const cities = wide
-        ? [["Karachi", W * .66, S], ["Dubai", W * .96, S * .62], ["London", W * .95, 120], ["Toronto", W * .76, 110], ["Singapore", W * .96, S * .9]]
-        : [["Dubai", W * .95, H * .6], ["London", W * .9, 84]];
+
+      // The world beyond: each destination sits in its true map direction from Balochistan.
+      // Karachi is close enough to plot at its real position; distant cities sit on a ring
+      // around the province, along the real compass bearing (same Mercator projection).
+      const cities = [];
+      if (wide) {
+        const [cx, cy] = path.centroid(g);
+        const Rx = Math.max(160, Math.min(W - cx - 110, cx - W * .46));
+        const Ry = Math.max(140, Math.min(cy - 70, S - cy + 10));
+        const DEST = [["Karachi", 67.01, 24.86, true], ["Dubai", 55.27, 25.2], ["London", -0.13, 51.5], ["Singapore", 103.82, 1.35]];
+        DEST.forEach(([name, lon, lat, near]) => {
+          const [px, py] = proj([lon, lat]);
+          if (near) { cities.push({ name, x: px, y: py, ux: 0, uy: 1 }); return; }
+          const dx = px - cx, dy = py - cy, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
+          cities.push({ name, x: cx + ux * Rx, y: cy + uy * Ry, ux, uy });
+        });
+      }
       const arcs = svg.append("g");
       const rnd = d3.randomLcg(7);
-      pts.forEach((p, i) => {
+      if (cities.length) pts.forEach((p, i) => {
         if (i % 2) return;
         const c = cities[Math.floor(rnd() * cities.length)];
-        const mx = (p[0] + c[1]) / 2, my = Math.min(p[1], c[2]) - 60 - rnd() * 80;
+        const mx = (p[0] + c.x) / 2, my = (p[1] + c.y) / 2;
+        const len = Math.hypot(c.x - p[0], c.y - p[1]) || 1;
+        let nx = -(c.y - p[1]) / len, ny = (c.x - p[0]) / len;
+        if (ny > 0) { nx = -nx; ny = -ny; }         // bow every arc upward, like a flight path
+        const k = len * (.18 + rnd() * .12);
         arcs.append("path").attr("class", "arc").attr("stroke", "url(#arcGrad)")
-          .attr("d", `M${p[0]},${p[1]} Q${mx},${my} ${c[1]},${c[2]}`)
+          .attr("d", `M${p[0]},${p[1]} Q${mx + nx * k},${my + ny * k} ${c.x},${c.y}`)
           .style("opacity", .25 + rnd() * .45).style("animation-delay", `${-rnd() * 3}s`);
       });
       const nodes = svg.append("g");
@@ -109,9 +126,11 @@ window.BB = (function () {
         nodes.append("circle").attr("class", "node").attr("cx", p[0]).attr("cy", p[1]).attr("r", 2.2);
       });
       const cg = svg.append("g");
-      cities.forEach(([n, x, y]) => {
-        cg.append("circle").attr("class", "city-dot").attr("cx", x).attr("cy", y).attr("r", 3);
-        cg.append("text").attr("class", "city").attr("x", x - 8).attr("y", y - 9).attr("text-anchor", "end").text(n);
+      cities.forEach(c => {
+        cg.append("circle").attr("class", "city-dot").attr("cx", c.x).attr("cy", c.y).attr("r", 3.2);
+        const anchor = c.ux > .3 ? "start" : c.ux < -.3 ? "end" : "middle";
+        cg.append("text").attr("class", "city").attr("text-anchor", anchor)
+          .attr("x", c.x + c.ux * 12).attr("y", c.y + (c.uy > .5 ? 18 : c.uy < -.5 ? -10 : 4)).text(c.name);
       });
     };
     draw();
