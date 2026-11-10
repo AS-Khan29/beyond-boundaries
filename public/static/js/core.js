@@ -75,10 +75,12 @@ window.BB = (function () {
     const g = await geo();
     const draw = () => {
       svg.selectAll("*").remove();
-      const W = innerWidth, H = Math.max(innerHeight, 640);
-      svg.attr("viewBox", `0 0 ${W} ${H}`);
+      const hero = document.querySelector(".hero"), stats = document.getElementById("heroStats");
+      const W = hero.clientWidth, H = hero.clientHeight;
+      const S = stats.offsetTop - 24;            // keep the drawing above the stats row
+      svg.attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid slice");
       const wide = W > 760;
-      const box = wide ? [[W * .44, 90], [W * .86, H - 170]] : [[W * .1, 100], [W * .9, H * .55]];
+      const box = wide ? [[W * .5, 96], [W * .86, S - 20]] : [[W * .1, 100], [W * .9, H * .5]];
       const proj = d3.geoMercator().fitExtent(box, g);
       const path = d3.geoPath(proj);
       const defs = svg.append("defs");
@@ -89,7 +91,7 @@ window.BB = (function () {
       const pts = g.features.map(f => proj([f.properties.cx, f.properties.cy]));
       // the world beyond: destinations at the edge of the frame
       const cities = wide
-        ? [["Karachi", W * .62, H - 120], ["Dubai", W * .97, H * .62], ["London", W * .96, 120], ["Toronto", W * .74, 118], ["Singapore", W * .99, H * .86]]
+        ? [["Karachi", W * .66, S], ["Dubai", W * .96, S * .62], ["London", W * .95, 120], ["Toronto", W * .76, 110], ["Singapore", W * .96, S * .9]]
         : [["Dubai", W * .95, H * .6], ["London", W * .9, 84]];
       const arcs = svg.append("g");
       const rnd = d3.randomLcg(7);
